@@ -34,6 +34,7 @@ ROM4OS[9]="https://smb4.s3.us-west-2.amazonaws.com/sheepshaver/apple_roms/newwor
 
 
 function usercheck {
+  return true
   [ $USER != "pi" ] && echo 'Run this script as the "pi" user.' && exit
 }
 
@@ -90,12 +91,12 @@ function net_error {
 
 
 function Base_dir {
-   [ -d ${BASE_DIR} ] || ( sudo mkdir -p ${BASE_DIR} && sudo chown pi:pi ${BASE_DIR} )
+   [ -d ${BASE_DIR} ] || ( sudo mkdir -p ${BASE_DIR} && sudo chown $USER:$USER ${BASE_DIR} )
 }
 
 
 function Src_dir {
-   [ -d ${SRC_DIR} ] || ( sudo mkdir -p ${SRC_DIR} && sudo chown pi:pi ${SRC_DIR} )
+   [ -d ${SRC_DIR} ] || ( sudo mkdir -p ${SRC_DIR} && sudo chown $USER:$USER ${SRC_DIR} )
 }
 
 function Build_NetDriver {
@@ -112,7 +113,7 @@ printf "\e[95m"; echo '
 cd Linux/NetDriver
 make
 sudo make dev
-sudo chown pi /dev/sheep_net
+sudo chown $USER /dev/sheep_net
 sudo make install
 sudo modprobe sheep_net
 
@@ -217,7 +218,7 @@ sudo apt install -y automake gobjc libudev-dev xa65 build-essential byacc texi2h
 Base_dir
 mkdir -p ${SRC_DIR}
 
-[ -d "/home/pi/Downloads" ] || mkdir /home/pi/Downloads
+[ -d "/home/$USER/Downloads" ] || mkdir /home/$USER/Downloads
 
 wget ${SDL2_SOURCE} -O - | tar -xz -C ${SRC_DIR}
 [ $? -ne 0 ] && net_error "SDL2 sources"

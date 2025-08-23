@@ -39,7 +39,7 @@
     function log_check {
         if ! [ -f ${LOG} ]; then
             sudo touch ${LOG}
-            sudo chown pi:pi ${LOG}
+            sudo chown $USER:$USER ${LOG}
         fi
         echo -e "\n$(date): $SYS ----------" >> ${LOG}
     }

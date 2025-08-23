@@ -17,6 +17,6 @@ if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
 
-su pi -c "syncterm -iSF"
+su $USER -c "syncterm -iSF"
 
 exit 0
