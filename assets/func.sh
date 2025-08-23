@@ -136,7 +136,7 @@ cd ${SRC_DIR}
 rm -rf macemu 2>/dev/null
 git clone ${BASILISK_REPO}
 cd ${SRC_DIR}/macemu
-git checkout 33c3419
+git checkout 2d022df81177ca05b259598e2a1345a9309de096
 cd ${SRC_DIR}/macemu/SheepShaver
 make links
 cd src/Unix
