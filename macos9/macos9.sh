@@ -32,8 +32,8 @@ sudo apt install -y libdirectfb-dev automake gobjc libudev-dev xa65 build-essent
                     texinfo libxaw7-dev libgtk2.0-cil-dev libgtkglext1-dev libpulse-dev \
                     bison libnet1 libnet1-dev libpcap0.8 libpcap0.8-dev libvte-dev \
                     libasound2-dev raspberrypi-kernel-headers build-essential git \
-                    libgtk2.0-dev x11proto-xf86dga-dev libesd0-dev libxxf86dga-dev \
-                    libxxf86dga1 libsdl1.2-dev 
+                    libgtk2.0-dev x11proto-xf86dga-dev libxxf86dga-dev \
+                    libxxf86dga1 libsdl1.2-dev # libesd0-dev was originally required too
 
 [ $? -ne 0 ] && net_error "Mac OS 9 apt packages"
 
