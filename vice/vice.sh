@@ -25,10 +25,12 @@ __     _____ ____ _____
 source ../assets/func.sh
 updateinfo
 # Packages
-sudo apt install -y wget tcpser netcat automake gobjc libudev-dev xa65 build-essential byacc \
+sudo apt install -y wget netcat-traditional automake gobjc libudev-dev xa65 build-essential byacc \
                     texi2html flex libreadline-dev libxaw7-dev texinfo libxaw7-dev libgtk2.0-cil-dev \
                     libgtkglext1-dev libpulse-dev bison libnet1 libnet1-dev libpcap0.8 libpcap0.8-dev \
                     libvte-dev libasound2-dev
+# FIXME tcpser must be compiled from source at http://www.jbrain.com/pub/linux/serial/.
+# It is not available as a package anymore.
 
 [ $? -ne 0 ] && net_error "VICE apt packages"
 
