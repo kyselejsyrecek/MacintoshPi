@@ -46,14 +46,18 @@ mkdir -p ${SRC_DIR} 2>/dev/null
 wget ${VICE_SOURCE} -O - | tar -xz -C ${SRC_DIR}
 [ $? -ne 0 ] && net_error "VICE sources"
 
-cd ${SRC_DIR}/vice-3.4
+cd ${SRC_DIR}/vice-${VICE_VERSION}
 ./configure --without-pulse \
             --with-sdlsound \
             --enable-sdlui2 \
             --enable-ethernet \
-            --enable-rs232
+            --enable-rs232 \
+            --disable-pdf-docs
 make
 sudo make install
-rm -rf ${SRC_DIR}
+
+# Debug-aware cleanup
+Cleanup
+
 echo '* done'
 

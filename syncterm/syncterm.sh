@@ -22,28 +22,27 @@ printf "\e[92m"; echo '
 |____/ \__, |_| |_|\___||_| |_____|_| \_\_|  |_|
        |___/                                    
 '; printf "\e[0m"; sleep 2
-source ./assets/func.sh
+source ../assets/func.sh
 updateinfo
 
-BDIR=~/syncterm-build
-mkdir $BDIR
+Base_dir
+Src_dir
 
 sudo apt install -y libncurses5-dev libsdl1.2-dev build-essential libsdl2-dev
 [ $? -ne 0 ] && net_error "SyncTERM apt packages"
 
-wget https://sourceforge.net/projects/syncterm/files/syncterm/syncterm-1.1/syncterm-1.1-src.tgz/download -O $BDIR/syncterm.tgz
+wget ${SYNCTERM_SOURCE} -O ${SRC_DIR}/syncterm.tgz
 
 [ $? -ne 0 ] && net_error "SyncTERM sources"
 
-cd $BDIR
+cd ${SRC_DIR}
 
 tar -xf syncterm.tgz
-cd syncterm-1.1/src/syncterm
+cd syncterm-${SYNCTERM_VERSION}/src/syncterm
 sudo make USE_SDL=1 NO_X=1
 sudo make install
-cd /
-sleep 2
-sudo rm -rf $BDIR
+
+Cleanup
 
 printf "\e[92m";
 echo *** all done ***
