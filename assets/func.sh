@@ -22,10 +22,12 @@ SRC_DIR="${BASE_DIR}/src"
 BASILISK_REPO="https://github.com/kanjitalk755/macemu"
 SHEEPSHAVER_REPO=${BASILISK_REPO}
 SDL2_SOURCE="https://www.libsdl.org/release/SDL2-2.0.7.tar.gz"
+SDL2_IMAGE_SOURCE="https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.5.tar.gz"
 VICE_SOURCE="https://downloads.sourceforge.net/project/vice-emu/releases/vice-3.4.tar.gz"
 BASILISK_FILE="/usr/local/bin/BasiliskII"
 SHEEPSHAVER_FILE="/usr/local/bin/SheepShaver"
 SDL2_FILE="/usr/local/lib/libSDL2-2.0.so.0.7.0"
+SDL2_IMAGE_FILE="/usr/local/lib/libSDL2_image-2.0.so.0.5.0"
 HDD_IMAGES="https://homer-retro.space/appfiles"
 ASOFT="${HDD_IMAGES}/as/asoft.tar.gz"
 ROM4OS[7]="https://github.com/macmade/Macintosh-ROMs/raw/18e1d0a9756f8ae3b9c005a976d292d7cf0a6f14/Performa-630.ROM"
@@ -234,6 +236,38 @@ cd ${SRC_DIR}/SDL2-2.0.7 &&
             --enable-video-kmsdrm \
             --enable-alsa \
             --enable-audio &&
+make -j3
+sudo make install
+
+rm -rf ${SRC_DIR}
+
+}
+
+
+function Build_SDL2_image {
+
+printf "\e[95m"; echo '
+ ____  ____  _     ____      _
+/ ___||  _ \| |   |___ \    (_)_ __ ___   __ _  __ _  ___
+\___ \| | | | |     __) |   | |  _   _ \ / _  |/ _  |/ _ \
+ ___) | |_| | |___ / __/    | | | | | | | (_| | (_| |  __/
+|____/|____/|_____|_____|   |_|_| |_| |_|\__,_|\__, |\___|
+                                              |___/
+
+'; printf "\e[0m"; sleep 2
+
+sudo apt install -y libjpeg-dev libpng-dev libtiff-dev libwebp-dev
+
+[ $? -ne 0 ] && net_error "SDL2_image apt packages"
+
+Base_dir
+mkdir -p ${SRC_DIR}
+
+wget ${SDL2_IMAGE_SOURCE} -O - | tar -xz -C ${SRC_DIR}
+[ $? -ne 0 ] && net_error "SDL2_image sources"
+
+cd ${SRC_DIR}/SDL2_image-2.0.5 && 
+./configure --host=arm-raspberry-linux-gnueabihf &&
 make -j3
 sudo make install
 

@@ -37,6 +37,9 @@ sudo apt install -y wget netcat-traditional automake gobjc libudev-dev xa65 buil
 # SDL2 check && builder
 [ -f $SDL2_FILE ] || Build_SDL2;
 
+# SDL2_image check && builder
+[ -f $SDL2_IMAGE_FILE ] || Build_SDL2_image;
+
 # VICE
 
 mkdir -p ${SRC_DIR} 2>/dev/null
