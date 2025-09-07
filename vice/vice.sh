@@ -52,7 +52,8 @@ cd ${SRC_DIR}/vice-${VICE_VERSION}
             --enable-sdlui2 \
             --enable-ethernet \
             --enable-rs232 \
-            --disable-pdf-docs
+            --disable-pdf-docs \
+            --without-libcurl
 make
 sudo make install
 

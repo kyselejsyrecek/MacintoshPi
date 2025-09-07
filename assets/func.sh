@@ -45,7 +45,7 @@ SDL2_IMAGE_SOURCE="https://www.libsdl.org/projects/SDL_image/release/SDL2_image-
 SDL2_IMAGE_FILE="/usr/local/lib/libSDL2_image-2.0.so.${SDL2_IMAGE_SONAME}"
 
 # VICE
-VICE_VERSION="3.5"
+VICE_VERSION="3.9"
 VICE_SOURCE="https://downloads.sourceforge.net/project/vice-emu/releases/vice-${VICE_VERSION}.tar.gz"
 
 # CDEmu
