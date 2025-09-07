@@ -22,7 +22,7 @@ printf "\e[92m"; echo '
  \____|____/|_____|_| |_| |_|\__,_|
 '; printf "\e[0m"; sleep 2
 
-source ./assets/func.sh
+source ../assets/func.sh
 updateinfo
 
 # Software
@@ -34,19 +34,21 @@ sudo apt-get install -y dpkg-dev dkms libao-dev intltool libsndfile1-dev libbz2-
 [ $? -ne 0 ] && net_error "CDEmu apt packages"
 
 # CDemu git repo
-rm -rf ~/cdemusrc
-git clone -b 'vhba-module-20210418' --single-branch --depth 1 https://github.com/cdemu/cdemu.git ~/cdemusrc
+Base_dir
+Src_dir
+rm -rf ${SRC_DIR}/cdemu
+git clone -b ${CDEMU_REVISION} --single-branch --depth 1 ${CDEMU_REPO} ${SRC_DIR}/cdemu
 [ $? -ne 0 ] && net_error "CDEmu sources"
 
 # vhba-module
-cd ~/cdemusrc/vhba-module
+cd ${SRC_DIR}/cdemu/vhba-module
 dpkg-buildpackage -b -uc -tc
 cd ..
 sudo dpkg -i vhba-dkms*.deb
 
 
 # libmirage
-cd ~/cdemusrc/libmirage
+cd ${SRC_DIR}/cdemu/libmirage
 dpkg-buildpackage -b -uc -tc
 cd ..
 sudo dpkg -i libmirage11*.deb
@@ -55,7 +57,7 @@ sudo dpkg -i libmirage11-dev*.deb
 
 
 # cdemu-daemon
-cd ~/cdemusrc/cdemu-daemon
+cd ${SRC_DIR}/cdemu/cdemu-daemon
 dpkg-buildpackage -b -uc -tc
 cd ..
 sudo dpkg -i cdemu-daemon_*.deb
@@ -63,20 +65,18 @@ sudo dpkg -i cdemu-daemon-dbg*.deb
 
 
 # cdemu-client
-cd ~/cdemusrc/cdemu-client
+cd ${SRC_DIR}/cdemu/cdemu-client
 dpkg-buildpackage -b -uc -tc
 cd ..
 sudo dpkg -i cdemu-client_*.deb
 
 
 # image-analyzer
-cd ~/cdemusrc/image-analyzer
+cd ${SRC_DIR}/cdemu/image-analyzer
 dpkg-buildpackage -b -uc -tc
 cd ..
 sudo dpkg -i image-analyzer_*.deb
-
-cd ~/
-rm -rf ~/cdemusrc
+Cleanup
 
 cat << EOF > /tmp/cdload
 #!/bin/sh
