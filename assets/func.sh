@@ -70,6 +70,16 @@ ROM4OS[7]="https://github.com/macmade/Macintosh-ROMs/raw/18e1d0a9756f8ae3b9c005a
 ROM4OS[8]="https://github.com/macmade/Macintosh-ROMs/raw/main/Quadra-650.ROM"
 ROM4OS[9]="https://smb4.s3.us-west-2.amazonaws.com/sheepshaver/apple_roms/newworld86.rom.zip"
 
+# Parse command line arguments for debug mode.
+for arg in "$@"; do
+    case $arg in
+        --debug)
+            export DEBUG=1
+            shift
+            ;;
+    esac
+done
+
 # Functions
 function usercheck {
   return 0
@@ -138,8 +148,7 @@ function Src_dir {
 }
 
 function Cleanup {
-    # Debug-aware cleanup routine
-    # Only cleanup if DEBUG is not set or is not "1"
+    # Only clean up sources and built files if DEBUG is not set to "1".
     if [ "${DEBUG:-0}" != "1" ]; then
         rm -rf ${SRC_DIR}
     else
