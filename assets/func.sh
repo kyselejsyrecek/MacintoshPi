@@ -17,6 +17,7 @@
 VERSION="1.4.1"
 
 # Dirs
+ASSETS_DIR="$( realpath $( dirname "${BASH_SOURCE}" ) )"
 BASE_DIR="/usr/share/macintoshpi"
 CONF_DIR="/etc/macintoshpi"
 WAV_DIR="${BASE_DIR}/sounds"
@@ -25,16 +26,16 @@ SRC_DIR="${BASE_DIR}/src"
 # Basilisk II
 BASILISK_REPO="https://github.com/kanjitalk755/macemu"
 BASILISK_FILE="/usr/local/bin/BasiliskII"
-BASILISK_REVISION="33c3419"
+BASILISK_REVISION="44bf57e79151d11af6f2c30997f507313e8751cf"
 
 # SheepShaver
 SHEEPSHAVER_REPO=${BASILISK_REPO}
 SHEEPSHAVER_FILE="/usr/local/bin/SheepShaver"
-SHEEPSHAVER_REVISION="2d022df81177ca05b259598e2a1345a9309de096"
+SHEEPSHAVER_REVISION="44bf57e79151d11af6f2c30997f507313e8751cf"
 
 # SDL2
-SDL2_VERSION="2.0.8"
-SDL2_SONAME="0.8.0"
+SDL2_VERSION="2.32.10"
+SDL2_SONAME="0.3200.10"
 SDL2_SOURCE="https://www.libsdl.org/release/SDL2-${SDL2_VERSION}.tar.gz"
 SDL2_FILE="/usr/local/lib/libSDL2-2.0.so.${SDL2_SONAME}"
 
@@ -50,14 +51,16 @@ VICE_SOURCE="https://downloads.sourceforge.net/project/vice-emu/releases/vice-${
 
 # CDEmu
 CDEMU_REPO="https://github.com/cdemu/cdemu.git"
-CDEMU_REVISION="vhba-module-20210418"
+CDEMU_REVISION="vhba-module-20250329"
 
 # Vmodem
-TTY0TTY_VERSION="1.2"
+TCPSER_VERSION="1.1.4"
+TCPSER_SOURCE="https://github.com/go4retro/tcpser/archive/refs/tags/v${TCPSER_VERSION}.tar.gz"
+TTY0TTY_VERSION="1.3.0"
 TTY0TTY_SOURCE="https://github.com/freemed/tty0tty/archive/refs/tags/${TTY0TTY_VERSION}.tar.gz"
 
 # SyncTERM
-SYNCTERM_VERSION="1.1"
+SYNCTERM_VERSION="1.6"
 SYNCTERM_SOURCE="https://sourceforge.net/projects/syncterm/files/syncterm/syncterm-${SYNCTERM_VERSION}/syncterm-${SYNCTERM_VERSION}-src.tgz/download"
 
 # HDD images and ROMs
@@ -186,6 +189,7 @@ cd ${SRC_DIR}/macemu/SheepShaver
 make links
 cd src/Unix
 
+patch -p4 < "${ASSETS_DIR}/SheepShaver-RPi-fix-natmem-offset.patch"
 NO_CONFIGURE=1 ./autogen.sh &&
 ./configure --enable-sdl-audio \
             --enable-sdl-video \
@@ -221,6 +225,9 @@ printf "\e[95m"; echo '
 
 '; printf "\e[0m"; sleep 2
 
+sudo apt install -y libmpfr-dev
+[ $? -ne 0 ] && net_error "Basilisk II apt packages"
+
 mkdir -p ${SRC_DIR} 2>/dev/null
 
 cd ${SRC_DIR}
@@ -231,7 +238,7 @@ cd ${SRC_DIR}/macemu/BasiliskII/src/Unix/
 NO_CONFIGURE=1 ./autogen.sh &&
 ./configure --enable-sdl-audio --enable-sdl-framework \
             --enable-sdl-video --disable-vosf \
-            --without-mon --without-esd --without-gtk --disable-nls &&
+            --without-mon --without-esd --without-gtk &&
 make -j3
 sudo make install
 
@@ -274,7 +281,6 @@ cd ${SRC_DIR}/SDL2-${SDL2_VERSION} &&
             --disable-video-x11 \
             --disable-pulseaudio \
             --disable-esd \
-            --disable-video-mir \
             --disable-video-wayland \
             --enable-video-kmsdrm \
             --enable-alsa \

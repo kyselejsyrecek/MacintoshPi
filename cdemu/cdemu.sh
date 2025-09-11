@@ -29,7 +29,7 @@ updateinfo
 sudo apt-get install -y dpkg-dev dkms libao-dev intltool libsndfile1-dev libbz2-dev \
                         liblzma-dev gtk-doc-tools gobject-introspection libgirepository1.0-dev \
                         python3-matplotlib libsamplerate0-dev cmake raspberrypi-kernel-headers \
-                        dh-systemd
+                        dh-dkms dh-python
 
 [ $? -ne 0 ] && net_error "CDEmu apt packages"
 
@@ -51,9 +51,9 @@ sudo dpkg -i vhba-dkms*.deb
 cd ${SRC_DIR}/cdemu/libmirage
 dpkg-buildpackage -b -uc -tc
 cd ..
-sudo dpkg -i libmirage11*.deb
+sudo dpkg -i libmirage*.deb
 sudo dpkg -i gir1.2-mirage*.deb
-sudo dpkg -i libmirage11-dev*.deb
+sudo dpkg -i libmirage*-dev*.deb
 
 
 # cdemu-daemon

@@ -25,10 +25,22 @@ __     ___      _               _    __  __           _
 '; printf "\e[0m"; sleep 2
 source ../assets/func.sh
 updateinfo
-sudo apt install -y tcpser raspberrypi-kernel-headers build-essential
-[ $? -ne 0 ] && net_error "VICE apt packages"
+sudo apt install -y raspberrypi-kernel-headers build-essential
+[ $? -ne 0 ] && net_error "Virutal Modem apt packages"
 Base_dir
 Src_dir
+
+# Installation of tcpser.
+wget ${TCPSER_SOURCE} -O ${SRC_DIR}/tcpser-${TCPSER_VERSION}.tar.gz
+[ $? -ne 0 ] && net_error "tcpser sources"
+cd ${SRC_DIR}
+tar zxf tcpser-${TCPSER_VERSION}.tar.gz
+cd tcpser-${TCPSER_VERSION}
+make
+sudo cp tcpser /usr/local/bin/
+sudo chmod 655 /usr/local/bin/tcpser
+
+# Installation of tty0tty.
 wget ${TTY0TTY_SOURCE} -O ${SRC_DIR}/tty0tty-${TTY0TTY_VERSION}.tar.gz
 [ $? -ne 0 ] && net_error "tty0tty sources"
 cd ${SRC_DIR}
@@ -67,7 +79,7 @@ After=network.target
 
 [Service]
 EnvironmentFile=-/etc/vmodem.conf
-ExecStart=/usr/bin/tcpser -d /dev/tnt0 -S \$BPS -l \$LOG_LEVEL -L \$LOG_FILE
+ExecStart=/usr/local/bin/tcpser -d /dev/tnt0 -S \$BPS -l \$LOG_LEVEL -L \$LOG_FILE
 ExecStartPre=/usr/bin/chmod 666 /dev/tnt0
 ExecStartPre=/usr/bin/chmod 666 /dev/tnt1
 ExecStartPost=/bin/sleep 1
